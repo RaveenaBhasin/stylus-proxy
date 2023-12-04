@@ -1,18 +1,3 @@
-//! Implements a hello-world example for Arbitrum Stylus, providing a Solidity ABI-equivalent
-//! Rust implementation of the Counter contract example provided by Foundry.
-//! Warning: this code is a template only and has not been audited.
-//! ```
-//! contract Counter {
-//!     uint256 public number;
-//!     function setNumber(uint256 newNumber) public {
-//!         number = newNumber;
-//!     }
-//!     function increment() public {
-//!         number++;
-//!     }
-//! }
-//! ```
-
 // Only run this as a WASM if the export-abi feature is not set.
 #![cfg_attr(not(feature = "export-abi"), no_main)]
 extern crate alloc;
@@ -22,37 +7,53 @@ extern crate alloc;
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 /// Import the Stylus SDK along with alloy primitive types for use in our program.
-use stylus_sdk::{alloy_primitives::U256, prelude::*};
+use stylus_sdk::{alloy_primitives::Address, prelude::*, call::delegate_call, msg};
 
-// Define the entrypoint as a Solidity storage object, in this case a struct
-// called `Counter` with a single uint256 value called `number`. The sol_storage! macro
-// will generate Rust-equivalent structs with all fields mapped to Solidity-equivalent
-// storage slots and types.
+
 sol_storage! {
     #[entrypoint]
-    pub struct Counter {
-        uint256 number;
+    pub struct Proxy {
+        MetaInformation meta_information;
+    }
+
+    pub struct MetaInformation {
+        address owner; 
+        address implementation_address;
+    }
+
+}
+
+
+#[external]
+impl Proxy {
+    pub fn get_implementation(&self) -> Result<Address, Vec<u8>> {
+        let addr = self.meta_information.implementation_address.get();
+        Ok(addr)
+    }
+
+    pub fn only_owner(&mut self) -> Result<(), Vec<u8>> {
+        self.only_owner_impl()?;
+        Ok(())
     }
 }
 
-/// Define an implementation of the generated Counter struct, defining a set_number
-/// and increment method using the features of the Stylus SDK.
-#[external]
-impl Counter {
-    /// Gets the number from storage.
-    pub fn number(&self) -> Result<U256, Vec<u8>> {
-        Ok(self.number.get())
-    }
-
-    /// Sets a number in storage to a user-specified value.
-    pub fn set_number(&mut self, new_number: U256) -> Result<(), Vec<u8>> {
-        self.number.set(new_number);
+impl Proxy {
+    pub unsafe fn call_implementation(&mut self, data:Vec<u8>) -> Result<(), Vec<u8>> {
+        let implementation_address = self.get_implementation()?;
+        delegate_call(self, implementation_address, &data)?;
         Ok(())
     }
 
-    /// Increments number and updates it values in storage.
-    pub fn increment(&mut self) -> Result<(), Vec<u8>> {
-        let number = self.number.get();
-        self.set_number(number + U256::from(1))
+    pub fn only_owner_impl(&mut self) -> Result<(), Vec<u8>> {
+        let owner = self.meta_information.owner.get();
+        if owner != msg::sender() {
+            return Err(format!("Invalid").into());
+        }
+        Ok(())
+    }
+
+    pub fn set_owner(&mut self, owner: Address) -> Result<(), Vec<u8>> {
+        self.meta_information.owner.set(owner);
+        Ok(())
     }
 }
