@@ -661,6 +661,20 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e496a50fda8aacccc86d7529e2c1e0892dbd0f898a6b5645b5561b89c3210efa"
 
 [[package]]
+name = "counter"
+version = "0.1.5"
+dependencies = [
+ "alloy-primitives 0.5.2",
+ "alloy-sol-types 0.5.2",
+ "ethers",
+ "eyre",
+ "hex",
+ "stylus-sdk",
+ "tokio",
+ "wee_alloc",
+]
+
+[[package]]
 name = "cpufeatures"
 version = "0.2.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2486,6 +2500,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "proxy"
+version = "0.1.5"
+dependencies = [
+ "alloy-primitives 0.5.2",
+ "alloy-sol-types 0.5.2",
+ "ethers",
+ "eyre",
+ "hex",
+ "stylus-sdk",
+ "tokio",
+ "wee_alloc",
+]
+
+[[package]]
 name = "quick-error"
 version = "1.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3204,20 +3232,6 @@ dependencies = [
  "quote",
  "rustversion",
  "syn 2.0.37",
-]
-
-[[package]]
-name = "stylus-hello-world"
-version = "0.1.5"
-dependencies = [
- "alloy-primitives 0.5.2",
- "alloy-sol-types 0.5.2",
- "ethers",
- "eyre",
- "hex",
- "stylus-sdk",
- "tokio",
- "wee_alloc",
 ]
 
 [[package]]

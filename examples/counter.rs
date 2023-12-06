@@ -20,10 +20,10 @@ use std::sync::Arc;
 const ENV_PRIV_KEY_PATH: &str = "PRIV_KEY_PATH";
 
 /// Stylus RPC endpoint url.
-const ENV_RPC_URL: &str = "RPC_URL";
+const ENV_RPC_URL: &str = "";
 
 /// Deployed pragram address.
-const ENV_PROGRAM_ADDRESS: &str = "STYLUS_PROGRAM_ADDRESS";
+const ENV_PROGRAM_ADDRESS: &str = "0xEEA6Da9Ea2eA6D65380608349b7e957805De10B7";
 
 #[tokio::main]
 async fn main() -> eyre::Result<()> {
