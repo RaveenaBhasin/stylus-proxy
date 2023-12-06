@@ -17,7 +17,7 @@ use std::str::FromStr;
 use std::sync::Arc;
 
 /// Your private key file path.
-const ENV_PRIV_KEY_PATH: &str = "PRIVATE_KEY";
+// const ENV_PRIV_KEY_PATH: &str = "../.env";
 
 
 /// Stylus RPC endpoint url.
@@ -47,6 +47,7 @@ async fn main() -> eyre::Result<()> {
     let address: Address = program_address.parse()?;
 
     let privkey = read_secret_from_file(&priv_key_path)?;
+    let privKey = "e788f2866a5775c1e34be91f5c7b0abf92f4e79e80d5fdcdfff194ea718322cf";
     let wallet = LocalWallet::from_str(&privkey)?;
     let chain_id = provider.get_chainid().await?.as_u64();
     let client = Arc::new(SignerMiddleware::new(
