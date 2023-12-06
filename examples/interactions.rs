@@ -17,10 +17,11 @@ use std::str::FromStr;
 use std::sync::Arc;
 
 /// Your private key file path.
-const ENV_PRIV_KEY_PATH: &str = "PRIV_KEY_PATH";
+const ENV_PRIV_KEY_PATH: &str = "PRIVATE_KEY";
+
 
 /// Stylus RPC endpoint url.
-const ENV_RPC_URL: &str = "";
+const ENV_RPC_URL: &str = "https://stylus-testnet.arbitrum.io/rpc";
 
 /// Deployed pragram address.
 const ENV_PROGRAM_ADDRESS: &str = "0xEEA6Da9Ea2eA6D65380608349b7e957805De10B7";
