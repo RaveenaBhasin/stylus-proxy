@@ -30,3 +30,7 @@ path = "main.rs"
 [lib]
 path = "lib.rs"
 crate-type = ["lib", "cdylib"]
+
+[[example]]
+name = "interactions"
+path = "../../examples/proxy.rs"

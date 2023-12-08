@@ -33,4 +33,4 @@ crate-type = ["lib", "cdylib"]
 
 [[example]]
 name = "interactions"
-path = "../../examples/interactions.rs"
+path = "../../examples/counter.rs"

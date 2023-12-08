@@ -11,29 +11,28 @@ use ethers::{
     signers::{LocalWallet, Signer},
     types::Address,
 };
-use eyre::eyre;
-use std::io::{BufRead, BufReader};
+// use eyre::eyre;
+// use std::io::{BufRead, BufReader};
 use std::str::FromStr;
 use std::sync::Arc;
 
 /// Your private key file path.
 // const ENV_PRIV_KEY_PATH: &str = "../.env";
 
-
 /// Stylus RPC endpoint url.
-const ENV_RPC_URL: &str = "https://stylus-testnet.arbitrum.io/rpc";
+// const ENV_RPC_URL: &str = "https://stylus-testnet.arbitrum.io/rpc";
 
 /// Deployed pragram address.
-const ENV_PROGRAM_ADDRESS: &str = "0xEEA6Da9Ea2eA6D65380608349b7e957805De10B7";
+// const ENV_PROGRAM_ADDRESS: &str = "0xEEA6Da9Ea2eA6D65380608349b7e957805De10B7";
 
 #[tokio::main]
 async fn main() -> eyre::Result<()> {
-    let priv_key_path = std::env::var(ENV_PRIV_KEY_PATH)
-        .map_err(|_| eyre!("No {} env var set", ENV_PRIV_KEY_PATH))?;
-    let rpc_url =
-        std::env::var(ENV_RPC_URL).map_err(|_| eyre!("No {} env var set", ENV_RPC_URL))?;
-    let program_address = std::env::var(ENV_PROGRAM_ADDRESS)
-        .map_err(|_| eyre!("No {} env var set", ENV_PROGRAM_ADDRESS))?;
+    // let priv_key_path = std::env::var(ENV_PRIV_KEY_PATH)
+    //     .map_err(|_| eyre!("No {} env var set", ENV_PRIV_KEY_PATH))?;
+    // let rpc_url =
+    //     std::env::var(ENV_RPC_URL).map_err(|_| eyre!("No {} env var set", ENV_RPC_URL))?;
+    // let program_address = std::env::var(ENV_PROGRAM_ADDRESS)
+    //     .map_err(|_| eyre!("No {} env var set", ENV_PROGRAM_ADDRESS))?;
     abigen!(
         Counter,
         r#"[
@@ -43,12 +42,15 @@ async fn main() -> eyre::Result<()> {
         ]"#
     );
 
+
+    let program_address = "0xEEA6Da9Ea2eA6D65380608349b7e957805De10B7";
+    let rpc_url = "https://stylus-testnet.arbitrum.io/rpc";
+    let priv_key = "e788f2866a5775c1e34be91f5c7b0abf92f4e79e80d5fdcdfff194ea718322cf";
     let provider = Provider::<Http>::try_from(rpc_url)?;
     let address: Address = program_address.parse()?;
 
-    let privkey = read_secret_from_file(&priv_key_path)?;
-    let privKey = "e788f2866a5775c1e34be91f5c7b0abf92f4e79e80d5fdcdfff194ea718322cf";
-    let wallet = LocalWallet::from_str(&privkey)?;
+    // let privkey = read_secret_from_file(&priv_key_path)?;
+    let wallet = LocalWallet::from_str(&priv_key)?;
     let chain_id = provider.get_chainid().await?.as_u64();
     let client = Arc::new(SignerMiddleware::new(
         provider,
@@ -67,10 +69,10 @@ async fn main() -> eyre::Result<()> {
     Ok(())
 }
 
-fn read_secret_from_file(fpath: &str) -> eyre::Result<String> {
-    let f = std::fs::File::open(fpath)?;
-    let mut buf_reader = BufReader::new(f);
-    let mut secret = String::new();
-    buf_reader.read_line(&mut secret)?;
-    Ok(secret.trim().to_string())
-}
+// fn read_secret_from_file(fpath: &str) -> eyre::Result<String> {
+//     let f = std::fs::File::open(fpath)?;
+//     let mut buf_reader = BufReader::new(f);
+//     let mut secret = String::new();
+//     buf_reader.read_line(&mut secret)?;
+//     Ok(secret.trim().to_string())
+// }
